@@ -8,4 +8,8 @@ public interface UserService {
 
 	List<User> getList();
 
+	User get(String uid);
+
+	void register(User u);
+
 }

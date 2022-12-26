@@ -8,6 +8,7 @@
 </head>
 <body>
 	<h3>User List</h3>
+	<a href="/user/register">사용자 등록</a>
 	<hr>
 	<table border="1">
 		<tr>
