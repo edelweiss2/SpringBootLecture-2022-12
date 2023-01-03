@@ -19,7 +19,7 @@ public class MapController {
 	@ResponseBody
 	@GetMapping("/staticMap")
 	public String staticMap() {
-
+		
 		return "accessId: " + accessId + "<br> secretKey: " + secretKey;
 	}
 }
