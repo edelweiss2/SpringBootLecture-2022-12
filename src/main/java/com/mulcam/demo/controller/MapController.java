@@ -2,7 +2,6 @@ package com.mulcam.demo.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mulcam.demo.entity.StaticMap;
-import com.mulcam.demo.service.CsvUtil;
+import com.mulcam.demo.service.CsvUtil2;
 import com.mulcam.demo.service.MapUtil;
 
 @Controller
@@ -167,14 +166,14 @@ public class MapController {
 			dataList.add(row);
 		}
 		
-		CsvUtil cu = new CsvUtil();
+		CsvUtil2 cu = new CsvUtil2();
 		cu.writeCsv(filename, dataList);
 		return "redirect:/map/hotPlacesResult";
 	}
 	
 	@GetMapping("/hotPlacesResult")
 	public String hotPlacesResult(Model model) throws Exception {
-		CsvUtil cu = new CsvUtil();
+		CsvUtil2 cu = new CsvUtil2();
 		List<List<String>> dataList = cu.readCsv("c:/Temp/지역명소.csv");
 		String marker = "";
 		int i = 0;
