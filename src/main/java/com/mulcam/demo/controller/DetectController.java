@@ -13,9 +13,9 @@ import java.net.URLConnection;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/detect")
@@ -27,14 +27,15 @@ public class DetectController {
 	@Value("${naver.secretKey}")
 	private String secretKey;
 	
-	@ResponseBody
 	@GetMapping("/naver")
-	public String naver() throws Exception {
+	public String naver(Model model) throws Exception {
 		String apiURL = "https://naveropenapi.apigw.ntruss.com/vision-obj/v1/detect";
-		File uploadFile = new File("c:/Temp/yolo-test.jpg");
+		File uploadFile = new File("c:/Temp/yolo-test2.jpg");
+		
 		URL url = new URL(apiURL);
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
         conn.setUseCaches(false);
+        
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setRequestMethod("POST");			//post로보냄 (생략해도 무방)
@@ -80,6 +81,8 @@ public class DetectController {
         }
         br.close();
         
-		return sb.toString();
+        model.addAttribute("fileName", fileName);
+        model.addAttribute("jsonResult", sb.toString());
+		return "detect/naverResult";
 	}
 }
