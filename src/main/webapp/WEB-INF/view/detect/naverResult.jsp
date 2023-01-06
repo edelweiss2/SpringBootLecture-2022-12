@@ -14,6 +14,8 @@
     <hr>
     <div id="result"></div>
     <canvas id="tcanvas" width="100" height="100"></canvas>
+    <br><br>
+    <button onclick="location.href='/detect/naver'">재실행</button>
     <script>
         let jsonStr = '${jsonResult}';
         let obj = JSON.parse(jsonStr);
@@ -26,7 +28,7 @@
         const canvas = document.getElementById("tcanvas");
         let ctx = canvas.getContext("2d");
         let img = new Image();
-        img.src = '/upload/${fileName}';
+        img.src = '/file/download?fileName=${fileName}';
         img.onload = function () {
             console.log(img.width, ',', img.height);
             canvas.width = img.width;
