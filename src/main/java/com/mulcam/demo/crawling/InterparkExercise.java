@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class CrawlExercise {
+public class InterparkExercise {
 
 	public static void main(String[] args) throws Exception {
 		// 크롤링 할 url

@@ -8,39 +8,30 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Service;
 
-@Service
-public class Crawling {
-	
-	public List<Interpark> interpark() throws Exception {
-		String url = "http://book.interpark.com/display/collectlist.do?_method=BestsellerHourNew201605&bestTp=1&dispNo=028#";
+public class GenieExercise {
+
+	public static void main(String[] args) throws Exception {
+		/** 
+		String url = "https://www.genie.co.kr/chart/top200";
 		Document doc = Jsoup.connect(url).get();
-		Elements lis = doc.select(".rankBestContentList > ol > li");
+
+		Elements trs = doc.select("tr.list");
+		Element tr = trs.get(0);
 		
-		List<Interpark> list = new ArrayList<>();
-		for (Element li : lis) {
-			Elements spans = li.select(".rankNumber.digit2").select("span");
-			String rank_ = "";
-			for (Element span : spans) {
-				String classes = span.attr("class").strip();  // 맨뒤에 항상 스페이스가 남는데 잘라줘야함. 클래스 가운데 공백은 구분자로 쓰임  
-				rank_ += classes.substring(classes.length() - 1);
-			}
-			int rank = Integer.parseInt(rank_);
-			String src = li.select(".coverImage img").attr("src");
-			String title = li.select(".itemName").text().strip();
-			String company = li.select(".company").text().strip();
-			String author = li.select(".author").text().strip();
-			String price_ = li.select(".price > em").text().strip();
-			int price = Integer.parseInt(price_.replace(",",""));
-			Interpark book = new Interpark(rank, src, title, author, company, price);
-			list.add(book);
-		}
+		String rank_ = tr.select(".number").text().strip().split(" ")[0];
+		int rank = Integer.parseInt(rank_);
 		
-		return list;
-	}
-	
-	public List<Genie> genie() throws Exception {
+								// cover클래스 이하 img 태그의 src값
+		String src = tr.select(".cover > img").attr("src");			// 앞에 https: 추가해줘야됨
+		String title = tr.select(".title.ellipsis").text().strip();
+		String artist = tr.select(".artist.ellipsis").text().strip();
+		String album = tr.select(".albumtitle.ellipsis").text().strip();
+		System.out.println(title + ", " + artist + ", " + album);
+		
+		*/
+		
+		// 2023-01-06T13:28:30.465271
 		LocalDateTime now = LocalDateTime.now();
 		String ymd = now.toString().substring(0,10).replace("-","");
 		String hh = now.toString().substring(11,13);
@@ -68,6 +59,5 @@ public class Crawling {
 				list.add(genie);
 			}
 		}
-		return list;
 	}
 }
