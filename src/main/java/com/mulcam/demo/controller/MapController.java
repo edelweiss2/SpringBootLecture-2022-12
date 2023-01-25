@@ -2,6 +2,7 @@ package com.mulcam.demo.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -37,11 +38,14 @@ public class MapController {
 	@Value("${roadAddrKey}")
 	private String roadAddrKey;
 	
+	@GetMapping("/kakaoMap")
+	public String kakaoForm() {
+		return "map/kakaoMap";
+	}
 	
-	@GetMapping("/staticMap")
-	public String staticForm() {
-		
-		return "map/staticForm";
+	@GetMapping("/naverMap")
+	public String naverForm() {
+		return "map/naverMap";
 	}
 	
 	@PostMapping("/staticMap")
@@ -201,4 +205,48 @@ public class MapController {
 		model.addAttribute("url", url+marker);
 		return "map/staticResult";
 	}
+	
+	@ResponseBody
+	@GetMapping("/mindPlaces")
+	public String mindPlaces() throws Exception {
+		String apiUrl = "https://api.odcloud.kr/api/3049990/v1/uddi:14a6ea21-af95-4440-bb05-81698f7a1987?page=1&perPage=10";
+		String query = "";
+		String apiKey = "data-portal-test-key";
+		query = URLEncoder.encode(query, "utf-8");
+		apiUrl += "?query=" + query;
+		
+		URL url = new URL(apiUrl);
+		// 헤더 설정
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestProperty("X-NCP-APIGW-API-KEY-ID", accessId);
+		conn.setRequestProperty("X-NCP-APIGW-API-KEY", secretKey);
+		conn.setDoInput(true);
+		
+		// 응답 결과 확인
+		int responseCode = conn.getResponseCode();
+		
+		// 데이터 수신
+		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+		StringBuffer sb = new StringBuffer();
+		String line = null;
+		
+		while((line = br.readLine()) != null) {
+			sb.append(line);
+		}
+		br.close();		
+		
+		JSONParser parser = new JSONParser();
+		JSONObject object = (JSONObject) parser.parse(sb.toString());
+		JSONArray addresses = (JSONArray) object.get("addresses");
+		JSONObject address = (JSONObject) addresses.get(0);
+		
+		String lng_ = (String) address.get("x");
+		String lat_ = (String) address.get("y");
+		Double lng = Double.parseDouble(lng_);
+		Double lat = Double.parseDouble(lat_);
+		
+		return "경도: " + lng_ + ", 위도: " + lat_;
+		
+	}
+	
 }
